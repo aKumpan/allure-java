@@ -1,13 +1,14 @@
 package io.qameta.allure.jbehave.steps;
 
+import io.qameta.allure.Allure;
+import io.qameta.allure.model.Attachment;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
-import org.jbehave.core.annotations.UsingSteps;
 import org.jbehave.core.annotations.When;
-import org.jbehave.core.steps.CandidateSteps;
 
 import java.util.Stack;
 
+import static io.qameta.allure.Allure.getLifecycle;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -19,6 +20,11 @@ public class StackSteps {
 
     @Given("an empty stack")
     public void createEmptyStack() {
+        //written to result JSON, but not attached to Test/Step (and so not appeared in results)
+        Allure.addAttachment("My attachment", "My attachment content");
+
+        //not even written to results JSON
+        getLifecycle().updateStep(attachment -> attachment.withAttachments(new Attachment().withName("test")));
         stack.clear();
     }
 

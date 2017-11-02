@@ -71,6 +71,17 @@ public class AllureJbehaveTest {
                 );
     }
 
+    @Test
+    public void shouldHaveAttachments() throws Exception {
+        embedder.runStoriesAsPaths(singletonList("stories/stack_story.story"));
+        final List<TestResult> testResults = results.getTestResults();
+
+        assertThat(testResults)
+                .hasSize(2)
+                .extracting(TestResult::getAttachments)
+                .isNot(null);
+    }
+
     static class ReportlessStoryReporterBuilder extends StoryReporterBuilder {
 
         private final File outputDirectory;
